@@ -38,6 +38,48 @@
 
 ---
 
+## 部署指南
+
+### Docker 部署（推荐）
+
+本项目提供 `docker-compose.yml`，可一键部署 Epay + BEpusdt 加密货币收款网关。
+
+```bash
+# 1. 克隆项目
+git clone https://github.com/XiaoYuan151/Epay.git
+cd Epay
+
+# 2. 配置环境变量
+cp docker/.env.example .env
+# 编辑 .env，修改数据库密码
+
+# 3. 启动所有服务
+docker compose up -d
+```
+
+启动后服务端口：
+
+| 服务 | 地址 | 说明 |
+|------|------|------|
+| Epay | `http://localhost:8080` | 易支付主程序 |
+| BEpusdt | `http://localhost:8381` | 加密货币收款网关 |
+| MySQL | 内部 3306 | 仅容器间访问 |
+
+首次部署请访问 `http://localhost:8080/install/` 完成安装，数据库主机填 `mysql`，用户名/密码/库名对应 `.env` 中的配置。
+
+BEpusdt 首次访问需通过安全入口初始化管理员账号，完成后在 Epay 后台添加支付通道，插件选择 `bepusdt`，接口地址填写 `http://你的服务器IP:8381/`。
+
+### 传统部署
+
+**环境要求：** PHP >= 7.4、MySQL >= 5.6、Nginx/Apache
+
+1. 上传源码至网站根目录
+2. 配置 Nginx 伪静态规则（参考 `nginx.txt`）或 Apache 开启 rewrite
+3. 访问 `/install/` 完成数据库安装
+4. 确认 `install/install.lock` 文件已生成
+
+---
+
 ## 打赏二维码
 
 如果你觉得对你有帮助，欢迎打赏支持 ❤️
