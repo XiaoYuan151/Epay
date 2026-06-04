@@ -30,6 +30,8 @@ class bepusdt_plugin
             'usdt.aptos',
             'usdc.aptos',
             'usdt.plasma',
+            'usdt.ton',
+            'ton.gram',
         ],
         'inputs'   => [
             'appurl'  => [
