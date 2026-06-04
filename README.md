@@ -17,6 +17,11 @@
 
 ## 更新日志
 
+### 2026/06/04
+1. BEpusdt 插件新增 TON 网络支持（usdt.ton、ton.gram）
+2. 新增 Docker Compose 一键部署方案（Epay + BEpusdt + MySQL）
+3. 安全清理：移除可疑第三方插件
+
 ### 2026/02/28
 1. 新增 H5 跳转微信小程序客服支付  
 
