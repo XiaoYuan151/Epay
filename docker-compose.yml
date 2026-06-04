@@ -1,0 +1,53 @@
+services:
+  epay:
+    image: php:8.2-apache
+    container_name: epay
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    volumes:
+      - .:/var/www/html
+      - ./docker/apache.conf:/etc/apache2/sites-available/000-default.conf
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      - TZ=Asia/Shanghai
+    command: >
+      bash -c "
+        docker-php-ext-install pdo pdo_mysql gmp bcmath &&
+        a2enmod rewrite &&
+        apache2-foreground
+      "
+
+  mysql:
+    image: mysql:8.0
+    container_name: epay-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-epay123456}
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-epay}
+      MYSQL_USER: ${MYSQL_USER:-epay}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-epay123456}
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  bepusdt:
+    image: v03413/bepusdt:latest
+    container_name: bepusdt
+    restart: unless-stopped
+    ports:
+      - "8381:8080"
+    volumes:
+      - bepusdt_data:/var/lib/bepusdt
+    environment:
+      - TZ=Asia/Shanghai
+
+volumes:
+  mysql_data:
+  bepusdt_data:
