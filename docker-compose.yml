@@ -18,6 +18,7 @@ services:
         apt-get update && apt-get install -y libgmp-dev &&
         docker-php-ext-install pdo pdo_mysql gmp bcmath &&
         a2enmod rewrite &&
+        chmod 777 /var/www/html/config.php /var/www/html/install &&
         apache2-foreground
       "
 
